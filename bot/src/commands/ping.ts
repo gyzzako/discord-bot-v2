@@ -1,0 +1,7 @@
+import { ChatInputCommandInteraction } from 'discord.js';
+
+export async function handlePing(interaction: ChatInputCommandInteraction) {
+  await interaction.reply('Pong!');
+}
+
+export default handlePing;

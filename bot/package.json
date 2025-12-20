@@ -1,0 +1,28 @@
+{
+  "name": "discord-music-bot",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "start": "node dist/index.js",
+    "test": "echo \"No tests yet\" && exit 0",
+    "test:api": "ts-node src/api/client.test.ts",
+    "test:api:integration": "ts-node src/api/client.integration.test.ts",
+    "test:bot": "ts-node src/tests/hasPermission.test.ts && ts-node src/tests/commands.test.ts"
+  },
+  "dependencies": {
+    "@discordjs/voice": "^0.19.0",
+    "@snazzah/davey": "^0.1.9",
+    "discord.js": "^14.11.0",
+    "lavalink-client": "^2.7.7",
+    "node-fetch": "^2.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.2",
+    "@types/node-fetch": "^2.6.13",
+    "dotenv": "^17.2.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.0"
+  }
+}
