@@ -9,8 +9,6 @@ A self-hosted, multi-guild Discord bot with an administration panel backend, des
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
-- [Dependencies](#dependencies)
-- [Contributing](#contributing)
 
 ## Project Description
 
