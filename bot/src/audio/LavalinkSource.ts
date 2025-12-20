@@ -14,8 +14,8 @@ export const getLavalinkManager = (client: Client) => {
     nodes: [
       {
         authorization: process.env.LAVALINK_PASSWORD ?? "",
-        host: process.env.LAVALINK_HOST ?? "",
-        port: process.env.LAVALINK_PORT ? parseInt(process.env.LAVALINK_PORT, 10) : 0,
+        host: process.env.LAVALINK_HOST ?? "localhost",
+        port: process.env.LAVALINK_PORT ? parseInt(process.env.LAVALINK_PORT, 10) : 2303,
         id: process.env.LAVALINK_ID,
         secure: false
       }
