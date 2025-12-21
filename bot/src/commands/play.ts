@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, GuildMember, MessageFlags, SlashCommandBuilder } from 'discord.js';
 import { guildManager } from '../guild/GuildManager';
 import { BotClient, Command } from '../types/clients';
+import { Queue, SearchResult, UnresolvedSearchResult } from 'lavalink-client';
 
 export default {
   data: new SlashCommandBuilder()
@@ -46,9 +47,21 @@ async function handlePlay(client: BotClient, interaction: ChatInputCommandIntera
 
   await player.queue.add(results.loadType === "playlist" ? results.tracks : results.tracks[0]);
 
-  if (!player.playing){
-    await player.play(connected ? { volume: 100, paused: false } : undefined)
-  }
+  await interaction.reply({
+      content: results.loadType === "playlist"
+          ? addedInQueueMessage(results, player.queue)
+          : addedSingleTrackMessage(results, player.queue)
+  });
 
-  interaction.reply(`🎶 Now playing **${track.info.title}**`);
+  if (!player.playing){
+    await player.play(connected ? { volume: 50, paused: false } : undefined)
+  }
+}
+
+function addedInQueueMessage(results: UnresolvedSearchResult | SearchResult, playerQueue: Queue) {
+  return `✅ Added [${results.tracks.length}] Tracks${results.playlist?.title ? ` - from the ${results.pluginInfo.type || "Playlist"} ${results.playlist.uri ? `[\`${results.playlist.title}\`](<${results.playlist.uri}>)` : `\`${results.playlist.title}\``}` : ""} at \`#${playerQueue.tracks.length - results.tracks.length}\``;
+}
+
+function addedSingleTrackMessage(results: UnresolvedSearchResult | SearchResult, playerQueue: Queue) {
+  return `✅ Added [\`${results.tracks[0].info.title}\`](<${results.tracks[0].info.uri}>) by \`${results.tracks[0].info.author}\` at \`#${playerQueue.tracks.length}\``
 }
