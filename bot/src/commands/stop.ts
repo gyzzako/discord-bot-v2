@@ -1,13 +1,20 @@
-import { ChatInputCommandInteraction, Client, GuildMember, MessageFlags } from 'discord.js';
+import { ChatInputCommandInteraction, GuildMember, MessageFlags, SlashCommandBuilder } from 'discord.js';
 import { guildManager } from '../guild/GuildManager';
+import { BotClient, Command } from '../types/clients';
 
-const manager = guildManager;
+export default {
+  data: new SlashCommandBuilder()
+      .setName('stop')
+      .setDescription('Stop playback and clear queue'),
+  execute: handleStop,
+} as Command;
 
-export async function handleStop(client: Client, interaction: ChatInputCommandInteraction) {
+
+async function handleStop(client: BotClient, interaction: ChatInputCommandInteraction) {
   const guildId = interaction.guildId ?? 'unknown';
   // permission check
   const member = interaction.member as GuildMember;
-  const allowed = await manager.hasPermission(guildId, member);
+  const allowed = await guildManager.hasPermission(guildId, member);
   if (!allowed) {
     return interaction.reply({ content: 'You do not have permission to stop playback.',  flags: MessageFlags.Ephemeral });
   }
@@ -17,10 +24,8 @@ export async function handleStop(client: Client, interaction: ChatInputCommandIn
     return interaction.reply({ content: 'No music is currently playing.', flags: MessageFlags.Ephemeral });
   }
   
-  player.stopPlaying()
-  player.destroy()
+  await player.stopPlaying()
+  await player.destroy()
 
   interaction.reply({ content: 'Playback stopped.' });
 }
-
-export default handleStop;

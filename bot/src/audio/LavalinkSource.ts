@@ -1,15 +1,7 @@
-
-import { Client } from "discord.js";
 import { LavalinkManager } from "lavalink-client";
+import { BotClient } from "../types/clients";
 
-// Extend the Client type to include the lavalink manager
-declare module "discord.js" {
-  interface Client {
-    lavalink: LavalinkManager;
-  }
-}
-
-export const getLavalinkManager = (client: Client) => {
+export const getLavalinkManager = (client: BotClient) => {
   return new LavalinkManager({
     nodes: [
       {
