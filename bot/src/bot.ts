@@ -26,7 +26,6 @@ export async function initBot(): Promise<void> {
   }
 
   const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] }) as BotClient;
-  client.defaultVolume = 100;
   client.lavalink = getLavalinkManager(client);
   client.apiClient = clientApi;
 

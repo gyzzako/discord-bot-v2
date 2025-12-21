@@ -16,16 +16,16 @@ async function handleStop(client: BotClient, interaction: ChatInputCommandIntera
   const member = interaction.member as GuildMember;
   const allowed = await guildManager.hasPermission(guildId, member);
   if (!allowed) {
-    return interaction.reply({ content: 'You do not have permission to stop playback.',  flags: MessageFlags.Ephemeral });
+    return interaction.reply({ content: 'You do not have permission to stop playback',  flags: MessageFlags.Ephemeral });
   }
   
   const player = client.lavalink.getPlayer(guildId);
   if (!player) {
-    return interaction.reply({ content: 'No music is currently playing.', flags: MessageFlags.Ephemeral });
+    return interaction.reply({ content: 'No music is currently playing', flags: MessageFlags.Ephemeral });
   }
   
   await player.stopPlaying()
   await player.destroy()
 
-  interaction.reply({ content: 'Playback stopped.' });
+  interaction.reply({ content: 'Playback stopped' });
 }

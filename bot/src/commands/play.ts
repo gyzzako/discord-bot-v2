@@ -13,39 +13,41 @@ export default {
 async function handlePlay(client: BotClient, interaction: ChatInputCommandInteraction) {
   const query = interaction.options.getString('query');
   if (!query) {
-    return interaction.reply({ content: 'You must provide song to play.', flags: MessageFlags.Ephemeral });
+    return interaction.reply({ content: 'You must provide song to play', flags: MessageFlags.Ephemeral });
   }
 
   const guildId = interaction.guildId ?? 'unknown';
   const member = interaction.member as GuildMember;
   const allowed = await guildManager.hasPermission(guildId, member);
   if (!allowed) {
-    return interaction.reply({ content: 'You do not have permission to play tracks.', flags: MessageFlags.Ephemeral });
+    return interaction.reply({ content: 'You do not have permission to play tracks', flags: MessageFlags.Ephemeral });
   }
 
   const voiceChannel = member.voice.channel;
   if (!voiceChannel) {
-    return interaction.reply({ content: 'You are not in a voice channel.', flags: MessageFlags.Ephemeral });
+    return interaction.reply({ content: 'You are not in a voice channel', flags: MessageFlags.Ephemeral });
   }
 
   const player = client.lavalink.createPlayer({
     guildId: guildId,
     voiceChannelId: voiceChannel.id,
-    textChannelId: interaction.channelId
+    textChannelId: interaction.channelId,
+    volume: 100
   });
   
   const results = await player.search({ query: query, source: 'youtube' }, member.user);
 
-  if (!results.tracks.length) return interaction.reply("No tracks found.");
+  if (!results.tracks.length) return interaction.reply({ content: "No tracks found", flags: MessageFlags.Ephemeral });
 
   const track = results.tracks[0];
 
   const connected = player.connected;
   if (!connected) await player.connect();
 
-  await player.queue.add(track);
+  await player.queue.add(results.loadType === "playlist" ? results.tracks : results.tracks[0]);
+
   if (!player.playing){
-    await player.play()
+    await player.play(connected ? { volume: 100, paused: false } : undefined)
   }
 
   interaction.reply(`🎶 Now playing **${track.info.title}**`);

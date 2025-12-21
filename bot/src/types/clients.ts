@@ -21,5 +21,4 @@ export interface BotClient extends Client {
     lavalink: LavalinkManager<Player>;
     apiClient: ApiClient;
     commands: Map<string, Command>;
-    defaultVolume: number;
 }
