@@ -5,6 +5,7 @@ import { loadCommands, loadEvents } from "./handler";
 import { guildManager } from './guild/GuildManager';
 import { getLavalinkManager } from './audio/LavalinkSource';
 import { BotClient } from './types/clients';
+import { loadLavalinkPlayerEvents } from './lavalink/event';
 
 
 let _client: BotClient | null = null;
@@ -31,6 +32,7 @@ export async function initBot(): Promise<void> {
 
   loadCommands(client);
   loadEvents(client);
+  loadLavalinkPlayerEvents(client);
 
   client.login(token).catch((err) => logger.error('Failed to login Discord client:', err));
   _client = client;

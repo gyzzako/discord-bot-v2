@@ -22,3 +22,9 @@ export interface BotClient extends Client {
     apiClient: ApiClient;
     commands: Map<string, Command>;
 }
+
+export interface CustomRequester {
+    id: string,
+    username: string,
+    avatar?: string,
+}
